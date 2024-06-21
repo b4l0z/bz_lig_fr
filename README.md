@@ -3,7 +3,7 @@
 ###### ⚠️ _Je ne suis pas responsable de vos actes. A vos risques et périls._
 ###### 📶 _Ce code cherche uniquement les IP locales, c'est a dire celles des périphériques connectés au réseau !_
 ###### 🌟 _Met une étoile pour me soutenir !_
-###### 🌍 _Version française (english version [here]()._
+###### 🌍 _Version française (english version [here](https://github.com/b4l0z/bz_lig_en/)._
 
 ## Installation
 
