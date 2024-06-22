@@ -1,6 +1,7 @@
 const os = require("os");
 const dns = require("dns");
 const ping = require("ping");
+const { red, green, magenta } = require("console-log-colors");
 
 console.log("");
 console.log("");
@@ -38,7 +39,7 @@ async function getHostname(ip) {
 async function scanIPRange() {
   const promises = [];
   const foundIPs = [];
-  console.log(`Périphériques connectés (IP Locale: ${require("./ip.json").localIP}):`);
+  console.log(green(`Périphériques connectés`), magenta(`(IP Locale: ${require("./ip.json").localIP})`), green(`:`));
   for (let i = start; i <= end; i++) {
     const ip = `${subnet}${i}`;
     promises.push(
@@ -47,9 +48,9 @@ async function scanIPRange() {
           const hostname = await getHostname(ip);
           if (ip == require("./ip.json").localIP) return;
           if (hostname) {
-            console.log(`${ip} (${hostname})`);
+            console.log(green(`${ip}`), magenta(`(${hostname})`));
           } else {
-            console.log(`${ip}`);
+            console.log(green(`${ip}`));
           }
           foundIPs.push(ip);
         }
