@@ -1,11 +1,11 @@
 const network = require("network");
 const fs = require("node:fs");
 const ip = require("./ip.json");
-const { red, green, magenta } = require("console-log-colors");
+const { red, green, magenta, bgRed } = require("console-log-colors");
 
 network.get_private_ip(function (err, localIP) {
   if (err) {
-    console.log(red("Une erreur est survenue lors de la récupération de l'IP locale.", err));
+    console.log(red("Une erreur est survenue lors de la récupération de l'IP locale:"), bgRed(err), red("."));
     return;
   }
 
@@ -21,6 +21,14 @@ network.get_private_ip(function (err, localIP) {
   } else {
     console.log(red("Adresse IP Invalide"));
   }
+});
+
+network.get_public_ip(function (err, publicIP) {
+  console.log(green("IP Publique"), magenta(`${publicIP}`));
+
+  ip[publicIP] = {};
+  ip["currentPublicIP"] = publicIP;
+  saveIP();
 });
 
 function saveIP() {
