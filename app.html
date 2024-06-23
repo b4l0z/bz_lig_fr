@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BZ LIG</title>
+    <style>
+      @font-face {
+        font-family: GeistRegular;
+        src: url("./font/Geist-Regular.ttf");
+      }
+      @font-face {
+        font-family: GeistBold;
+        src: url("./font/Geist-Bold.ttf");
+      }
+
+      body {
+        background-color: #5c6b73;
+      }
+
+      .page_header {
+        position: relative;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #253237;
+        color: #e0fbfc;
+        margin-left: 400px;
+        margin-right: 400px;
+        padding: 8px 20px;
+        border-radius: 20px;
+      }
+
+      .header_localIP {
+        font-family: GeistRegular;
+        margin-right: auto;
+        padding-right: 20px;
+        font-size: 20px;
+      }
+
+      .header_title {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: center;
+      }
+
+      .header_title_bz {
+        font-family: GeistBold;
+        font-size: 50px;
+        margin: 10px;
+      }
+
+      .header_title_lig {
+        font-family: GeistBold;
+        font-size: 30px;
+        margin: 10px;
+      }
+
+      .header_version {
+        font-family: GeistRegular;
+        margin-left: auto;
+        padding-left: 20px;
+      }
+
+      .ip_title {
+        margin-top: 50px;
+        color: #e0fbfc;
+        font-family: GeistRegular;
+        text-align: center;
+        text-decoration: underline;
+      }
+
+      .ip_box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #253237;
+        margin: 50px;
+        margin-top: 10px;
+        margin-bottom: 20px;
+        margin-left: 750px;
+        margin-right: 750px;
+        border-radius: 20px;
+        font-size: 25px;
+        color: #e0fbfc;
+        font-family: GeistRegular;
+        text-align: center;
+        position: relative;
+      }
+
+      .status {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        font-family: GeistBold;
+      }
+
+      .moncercle {
+        background: #03c03c;
+        border-radius: 50%;
+        width: 15px;
+        height: 15px;
+        margin-left: 5px;
+      }
+
+      .ip_div_title {
+        margin-top: 40px;
+      }
+
+      .ping {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 16px;
+        font-family: GeistBold;
+        color: #e0fbfc;
+      }
+    </style>
+  </head>
+  <body>
+    <header class="page_header">
+      <h1 class="header_localIP" id="header_localIP">IP Locale:</h1>
+      <div class="header_title">
+        <h1 class="header_title_bz">BZ</h1>
+        <h1 class="header_title_lig">LIG</h1>
+      </div>
+      <h1 class="header_version">v1.2</h1>
+    </header>
+    <h1 class="ip_title">IP trouvées sur le réseau :</h1>
+    <div id="ip_container"></div>
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script>
+      var socket = io();
+
+      function createIpBox(ip, ping) {
+        // Create the main container div
+        const ipBox = document.createElement("div");
+        ipBox.className = "ip_box";
+
+        // Create the ping div
+        const pingDiv = document.createElement("div");
+        pingDiv.className = "ping";
+        pingDiv.textContent = `${ping}ms`;
+
+        // Create the status div
+        const statusDiv = document.createElement("div");
+        statusDiv.className = "status";
+        statusDiv.textContent = "Online";
+
+        // Create the circle div
+        const circle = document.createElement("div");
+        circle.className = "moncercle";
+
+        // Define circle color with ping
+        if (ping > 200) {
+          circle.style.background = "#ED9121";
+        }
+        if (ping > 600) {
+          circle.style.background = "#FF0800";
+        }
+
+        // Append the circle to the status div
+        statusDiv.appendChild(circle);
+
+        // Create the IP title
+        const ipDivTitle = document.createElement("h4");
+        ipDivTitle.className = "ip_div_title";
+        ipDivTitle.textContent = ip;
+
+        // Append the ping div, status div, and IP title to the main container div
+        ipBox.appendChild(pingDiv);
+        ipBox.appendChild(statusDiv);
+        ipBox.appendChild(ipDivTitle);
+
+        // Append the main container div to the container in the HTML
+        document.getElementById("ip_container").appendChild(ipBox);
+      }
+
+      //////////////////////////////////////////////////////////////////////////
+
+      socket.on("ip_data", function (item) {
+        createIpBox(item.ip, Math.round(item.ping));
+      });
+
+      socket.on("local_ip", function (ip) {
+        document.getElementById("header_localIP").innerHTML = `IP Locale: ${ip}`;
+      });
+    </script>
+  </body>
+</html>
