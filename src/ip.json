@@ -1,4 +1,5 @@
 {
   "third_octet": null,
-  "localIP": null
+  "localIP": null,
+  "currentPublicIP": null
 }
