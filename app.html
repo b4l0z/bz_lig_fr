@@ -140,25 +140,20 @@
       var socket = io();
 
       function createIpBox(ip, ping) {
-        // Create the main container div
         const ipBox = document.createElement("div");
         ipBox.className = "ip_box";
 
-        // Create the ping div
         const pingDiv = document.createElement("div");
         pingDiv.className = "ping";
         pingDiv.textContent = `${ping}ms`;
 
-        // Create the status div
         const statusDiv = document.createElement("div");
         statusDiv.className = "status";
         statusDiv.textContent = "Online";
 
-        // Create the circle div
         const circle = document.createElement("div");
         circle.className = "moncercle";
 
-        // Define circle color with ping
         if (ping > 200) {
           circle.style.background = "#ED9121";
         }
@@ -166,20 +161,16 @@
           circle.style.background = "#FF0800";
         }
 
-        // Append the circle to the status div
         statusDiv.appendChild(circle);
 
-        // Create the IP title
         const ipDivTitle = document.createElement("h4");
         ipDivTitle.className = "ip_div_title";
         ipDivTitle.textContent = ip;
 
-        // Append the ping div, status div, and IP title to the main container div
         ipBox.appendChild(pingDiv);
         ipBox.appendChild(statusDiv);
         ipBox.appendChild(ipDivTitle);
 
-        // Append the main container div to the container in the HTML
         document.getElementById("ip_container").appendChild(ipBox);
       }
 
